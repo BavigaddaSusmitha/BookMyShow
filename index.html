@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Booking Website</title>
+    <!-- Use Tailwind CSS for rapid, responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .booking-popup {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+        .booking-popup.hidden {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        .animate-bounce-in {
+            animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .category-button.active {
+            @apply bg-indigo-600 text-white shadow-lg;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 antialiased">
+
+    <!-- Main Container -->
+    <div class="flex flex-col items-center py-12 px-4 min-h-screen">
+        <header class="text-center mb-8">
+            <h1 class="text-5xl font-extrabold text-indigo-800 tracking-tight mb-2">
+                Book Your Next Event
+            </h1>
+            <p class="text-lg text-gray-600 max-w-xl mx-auto">
+                Discover and book tickets for your favorite concerts, shows, and festivals with a single click.
+            </p>
+        </header>
+
+        <!-- Category Filter Buttons -->
+        <div class="mb-8 flex flex-wrap justify-center gap-2">
+            <button onclick="filterEvents('all', this)" class="category-button px-4 py-2 rounded-full font-semibold text-gray-700 bg-white shadow hover:bg-gray-100 transition-colors duration-200 active">All</button>
+            <button onclick="filterEvents('music', this)" class="category-button px-4 py-2 rounded-full font-semibold text-gray-700 bg-white shadow hover:bg-gray-100 transition-colors duration-200">Music</button>
+            <button onclick="filterEvents('sports', this)" class="category-button px-4 py-2 rounded-full font-semibold text-gray-700 bg-white shadow hover:bg-gray-100 transition-colors duration-200">Sports</button>
+            <button onclick="filterEvents('dance', this)" class="category-button px-4 py-2 rounded-full font-semibold text-gray-700 bg-white shadow hover:bg-gray-100 transition-colors duration-200">Dance</button>
+            <button onclick="filterEvents('circus', this)" class="category-button px-4 py-2 rounded-full font-semibold text-gray-700 bg-white shadow hover:bg-gray-100 transition-colors duration-200">Circus</button>
+            <button onclick="filterEvents('movie', this)" class="category-button px-4 py-2 rounded-full font-semibold text-gray-700 bg-white shadow hover:bg-gray-100 transition-colors duration-200">Movie</button>
+        </div>
+
+        <!-- Events Grid -->
+        <div id="events-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
+            <!-- Event Card 1: Music Concert -->
+            <div class="event-card bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300" data-category="music">
+                <img class="w-full h-48 object-cover rounded-t-2xl" src="https://placehold.co/600x400/805ad5/ffffff?text=Concert" alt="Music Concert">
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">The Weekend Tour</h3>
+                    <p class="text-sm text-gray-500 mb-2">Live at Stadium A, City X</p>
+                    <p class="text-xl font-bold text-indigo-600 mb-4">$50</p>
+                    <p class="text-gray-700 text-base mb-4">An unforgettable night of music and lights. Get your tickets now!</p>
+                    <button onclick="bookShow('The Weekend Tour', 50)" class="w-full py-3 px-6 bg-indigo-600 text-white font-semibold rounded-full shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors duration-300">
+                        Book My Show
+                    </button>
+                </div>
+            </div>
+
+            <!-- Event Card 2: Comedy Show (categorized as Movie for this example) -->
+            <div class="event-card bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300" data-category="movie">
+                <img class="w-full h-48 object-cover rounded-t-2xl" src="https://placehold.co/600x400/4299e1/ffffff?text=Comedy" alt="Comedy Show">
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Laugh Out Loud Fest</h3>
+                    <p class="text-sm text-gray-500 mb-2">The Comedy Club, City Y</p>
+                    <p class="text-xl font-bold text-indigo-600 mb-4">$35</p>
+                    <p class="text-gray-700 text-base mb-4">A night of non-stop laughter with top comedians from around the world.</p>
+                    <button onclick="bookShow('Laugh Out Loud Fest', 35)" class="w-full py-3 px-6 bg-indigo-600 text-white font-semibold rounded-full shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors duration-300">
+                        Book My Show
+                    </button>
+                </div>
+            </div>
+
+            <!-- Event Card 3: Sports Match -->
+            <div class="event-card bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300" data-category="sports">
+                <img class="w-full h-48 object-cover rounded-t-2xl" src="https://placehold.co/600x400/38a169/ffffff?text=Sports" alt="Sports Match">
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Champions Cup Final</h3>
+                    <p class="text-sm text-gray-500 mb-2">Sports Arena, City Z</p>
+                    <p class="text-xl font-bold text-indigo-600 mb-4">$75</p>
+                    <p class="text-gray-700 text-base mb-4">Witness the final showdown between the two greatest teams. Don't miss out!</p>
+                    <button onclick="bookShow('Champions Cup Final', 75)" class="w-full py-3 px-6 bg-indigo-600 text-white font-semibold rounded-full shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors duration-300">
+                        Book My Show
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Event Card 4: Dance Performance -->
+            <div class="event-card bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300" data-category="dance">
+                <img class="w-full h-48 object-cover rounded-t-2xl" src="https://placehold.co/600x400/f6ad55/ffffff?text=Dance" alt="Dance Performance">
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Rhythm & Soul Night</h3>
+                    <p class="text-sm text-gray-500 mb-2">Downtown Theater, City A</p>
+                    <p class="text-xl font-bold text-indigo-600 mb-4">$40</p>
+                    <p class="text-gray-700 text-base mb-4">Experience a mesmerizing fusion of classical and contemporary dance.</p>
+                    <button onclick="bookShow('Rhythm & Soul Night', 40)" class="w-full py-3 px-6 bg-indigo-600 text-white font-semibold rounded-full shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors duration-300">
+                        Book My Show
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Event Card 5: Circus Show -->
+            <div class="event-card bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300" data-category="circus">
+                <img class="w-full h-48 object-cover rounded-t-2xl" src="https://placehold.co/600x400/9f7aea/ffffff?text=Circus" alt="Circus Show">
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Cirque Fantastique</h3>
+                    <p class="text-sm text-gray-500 mb-2">Big Top Arena, City B</p>
+                    <p class="text-xl font-bold text-indigo-600 mb-4">$60</p>
+                    <p class="text-gray-700 text-base mb-4">A breathtaking spectacle of acrobatics, magic, and clowning.</p>
+                    <button onclick="bookShow('Cirque Fantastique', 60)" class="w-full py-3 px-6 bg-indigo-600 text-white font-semibold rounded-full shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors duration-300">
+                        Book My Show
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Event Card 6: Movie Screening -->
+            <div class="event-card bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300" data-category="movie">
+                <img class="w-full h-48 object-cover rounded-t-2xl" src="https://placehold.co/600x400/ed8936/ffffff?text=Movie" alt="Movie Screening">
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Midnight Premier</h3>
+                    <p class="text-sm text-gray-500 mb-2">Cineplex 5, City C</p>
+                    <p class="text-xl font-bold text-indigo-600 mb-4">$20</p>
+                    <p class="text-gray-700 text-base mb-4">Be the first to see the highly-anticipated blockbuster film.</p>
+                    <button onclick="bookShow('Midnight Premier', 20)" class="w-full py-3 px-6 bg-indigo-600 text-white font-semibold rounded-full shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors duration-300">
+                        Book My Show
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- My Bookings Section -->
+        <div class="w-full max-w-6xl mt-16 px-4">
+            <h2 class="text-3xl font-extrabold text-indigo-800 tracking-tight mb-6 text-center">
+                My Bookings
+            </h2>
+            <div id="booked-shows" class="bg-white rounded-2xl shadow-xl p-6 min-h-[100px]">
+                <p id="no-bookings-message" class="text-center text-gray-500 text-lg">You have no bookings yet.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Successful Pop-up -->
+    <div id="popup-overlay" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 hidden">
+        <div id="booking-popup" class="bg-white p-8 rounded-2xl shadow-2xl booking-popup transform">
+            <div class="flex flex-col items-center text-center">
+                <svg class="w-16 h-16 text-green-500 mb-4 animate-bounce-in" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">Booking Successful!</h2>
+                <p id="booking-message" class="text-lg text-gray-600 mb-6">Your booking has been confirmed.</p>
+                <button onclick="closePopup()" class="py-2 px-6 bg-gray-200 text-gray-800 font-semibold rounded-full hover:bg-gray-300 transition-colors duration-300 focus:outline-none">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const bookedShows = [];
+        const bookedShowsContainer = document.getElementById('booked-shows');
+        const noBookingsMessage = document.getElementById('no-bookings-message');
+
+        function bookShow(eventTitle, price) {
+            // Add the new booking to our array
+            bookedShows.push({ title: eventTitle, price: price });
+            
+            // Update the display of booked shows
+            updateBookedShows();
+
+            // Show the success pop-up
+            const popupOverlay = document.getElementById('popup-overlay');
+            const bookingMessage = document.getElementById('booking-message');
+
+            bookingMessage.textContent = `You have successfully booked "${eventTitle}" for $${price}!`;
+            popupOverlay.classList.remove('hidden');
+
+            // Hide the popup after a few seconds
+            setTimeout(() => {
+                closePopup();
+            }, 3000);
+        }
+
+        function deleteBooking(eventTitle) {
+            const index = bookedShows.findIndex(show => show.title === eventTitle);
+            if (index > -1) {
+                bookedShows.splice(index, 1);
+                updateBookedShows();
+            }
+        }
+
+        function closePopup() {
+            const popupOverlay = document.getElementById('popup-overlay');
+            popupOverlay.classList.add('hidden');
+        }
+
+        function updateBookedShows() {
+            if (bookedShows.length > 0) {
+                noBookingsMessage.style.display = 'none';
+                bookedShowsContainer.innerHTML = ''; // Clear previous content
+
+                let totalCost = 0;
+                bookedShows.forEach(show => {
+                    const showElement = document.createElement('div');
+                    showElement.className = 'bg-gray-100 p-4 rounded-xl mb-2 flex justify-between items-center';
+                    showElement.innerHTML = `
+                        <span class="text-lg font-semibold text-gray-800">${show.title}</span>
+                        <div class="flex items-center gap-4">
+                            <span class="text-lg font-bold text-indigo-600">$${show.price}</span>
+                            <button onclick="deleteBooking('${show.title}')" class="text-red-500 hover:text-red-700 font-semibold text-sm">Remove</button>
+                        </div>
+                    `;
+                    bookedShowsContainer.appendChild(showElement);
+                    totalCost += show.price;
+                });
+                
+                // Display the total cost
+                const totalElement = document.createElement('div');
+                totalElement.className = 'mt-4 pt-4 border-t border-gray-200 flex justify-between items-center font-bold text-xl';
+                totalElement.innerHTML = `<span>Total:</span><span>$${totalCost}</span>`;
+                bookedShowsContainer.appendChild(totalElement);
+
+            } else {
+                noBookingsMessage.style.display = 'block';
+                bookedShowsContainer.innerHTML = '';
+                bookedShowsContainer.appendChild(noBookingsMessage);
+            }
+        }
+
+        function filterEvents(category, button) {
+            const allButtons = document.querySelectorAll('.category-button');
+            allButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            const eventCards = document.querySelectorAll('.event-card');
+            eventCards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
