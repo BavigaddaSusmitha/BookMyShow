@@ -17,7 +17,7 @@ Features
 
     Fully Responsive Design: The website is optimized for an excellent viewing experience on both desktop and mobile devices.
 
-Technologies Used
+## Technologies Used
 
     React: A JavaScript library for building user interfaces.
 
@@ -25,7 +25,7 @@ Technologies Used
 
     Tailwind CSS: A utility-first CSS framework for rapid styling.
 
-Getting Started
+## Getting Started
 
 To run this project locally, you will need Node.js and npm installed on your machine.
 Prerequisites
